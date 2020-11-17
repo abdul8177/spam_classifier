@@ -1,0 +1,7 @@
+"--train_batch_size=120"
+"--train_epochs=30"
+"--train_dropout=0.2"
+"--train_optimizer=adam"
+"--train_loss_fn=categorical_entropy"
+"--dense_layer_activation= relu"
+"--output_layer_activation= softmax"

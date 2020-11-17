@@ -1,0 +1,5 @@
+root - INFO - Init run
+root - INFO - preprocessing started
+root - INFO - removing punc
+root - INFO - lowering text
+root - INFO - removing stopword
