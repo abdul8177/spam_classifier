@@ -32,7 +32,7 @@ flags.DEFINE_float(
 )
 
 flags.DEFINE_string(
-    "train_optimizer", None,
+    "train_optimizer", "adam",
     "Optimizer to be used for model training.")
 
 flags.DEFINE_string(
@@ -84,7 +84,7 @@ class DataFormatting():
         logging.info('lowering text')
         self.text = self.text.apply(lambda x: self.lower_txt(x))    
         logging.info('removing stopword')
-        self.text = self.text.apply(lambda word: self.remove_stopwords(word))   
+        # self.text = self.text.apply(lambda word: self.remove_stopwords(word))   
         logging.info('stemming')
         self.text = self.text.apply(lambda word: self.stemming(word)) 
         return self.text
@@ -110,9 +110,10 @@ class Keras_lstm():
         model = Sequential()
         model.add(Embedding(max_words, 50, input_length=max_len))
         model.add(LSTM(64))
-        model.add(Dense(256, activation= FLAGS.dense_layer_activation))
-        model.add(Dropout(FLAGS.train_dropout))
-        model.add(Dense(1, activation= FLAGS.output_layer_activation))
+        model.add(Dense(256, activation= 'relu'))
+        model.add(Dropout(0.2))
+        model.add(Dense(1, activation= 'softmax'))
+        
         model.summary()
 
         input= Input(shape= [max_len])
@@ -121,8 +122,8 @@ class Keras_lstm():
 
     def model_training(self, padded_sequence, Y_train, model):
         history = model.fit(padded_sequence, Y_train,
-                            batch_size=FLAGS.train_batch_size,
-                            epochs=FLAGS.train_epochs,
+                            batch_size=32,
+                            epochs=20,
                             validation_split=0.1,
                             callbacks=[EarlyStopping(monitor='val_loss',
                                                                     min_delta=0,
@@ -152,7 +153,7 @@ def main(argv):
     padded_sequence = model_fn.padding(tokenized_text, 200)
 
     keras_model = model_fn.keras_lstm(200,1000)
-    keras_model.compile(loss=FLAGS.train_loss_fn, optimizer=FLAGS.train_optimizer, metrics=['accuracy'])
+    keras_model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=['accuracy'])
     model_fn.model_training(padded_sequence, Y_train,keras_model)
     model_fn.model_save(keras_model)
 
