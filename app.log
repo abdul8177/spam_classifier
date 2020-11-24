@@ -5,3 +5,4 @@ root - INFO - lowering text
 root - INFO - removing stopword
 root - INFO - stemming
 root - INFO - preprocessing done
+numexpr.utils - INFO - NumExpr defaulting to 8 threads.
