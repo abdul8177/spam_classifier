@@ -15,7 +15,7 @@ from keras.layers.convolutional import MaxPooling1D
 import keras
 from keras.preprocessing import sequence
 import tensorflow as tf
-from tensorflow.keras.optimizers import Adam 
+from tensorflow.keras.optimizers import Adam, RMSprop
 from keras.callbacks import EarlyStopping
 import pickle
 import logging
